@@ -5,12 +5,14 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "concurrently \"nodemon index.js\" \"cd client && npm run start\""
+
   },
   "engines": {
     "node": "13.6.0",
     "npm": "6.13.4"
   },
+  "proxy": "http://localhost:5000",
   "repository": {
     "type": "git",
     "url": "git+https://bharath6365@github.com/bharath6365/thatchatbot.git"
@@ -28,6 +30,7 @@
     "http2": "^3.3.7"
   },
   "devDependencies": {
+    "concurrently": "^5.2.0",
     "nodemon": "^2.0.4"
   }
 }
