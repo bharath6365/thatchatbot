@@ -1,4 +1,4 @@
-const dialogFlow = require('dialogFlow');
+const dialogFlow = require('dialogflow');
 const config = require('../config/keys');
 const structJson = require('./structjson');
 
