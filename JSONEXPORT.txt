@@ -1,0 +1,2 @@
+// Set this everytime.
+export GOOGLE_APPLICATION_CREDENTIALS=~/Documents/thatchatbot/thatchatbot.json

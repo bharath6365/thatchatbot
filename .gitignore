@@ -1,1 +1,3 @@
 ./node_modules
+thatchatbot*.json
+config/dev.js
