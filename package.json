@@ -10,7 +10,7 @@
   "engines": {
     "node": "10.17.0",
     "npm": "6.11.3"
-  }
+  },
   "repository": {
     "type": "git",
     "url": "git+https://bharath6365@github.com/bharath6365/thatchatbot.git"
