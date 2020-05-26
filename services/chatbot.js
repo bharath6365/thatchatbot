@@ -8,18 +8,14 @@ const credentials =  {
   private_key: config.googlePrivateKey
 }
 
-console.log('Project ID is', config.googleProjectID);
-console.log('Client email is', config.googleClientEmail);
-console.log('Private key is', config.googlePrivateKey);
-console.log('Dialog flow session id is', config.dialogFlowSessionID);
-
 const sessionClient = new dialogFlow.SessionsClient({
   projectID,
   credentials
 });
 
-const sessionPath = sessionClient.sessionPath(config.googleProjectID, config.dialogFlowSessionID);
-exports.textQuery = async (incomingText, parameters = {}) => {
+
+exports.textQuery = async (incomingText, userID,  parameters = {}) => {
+  const sessionPath = sessionClient.sessionPath(config.googleProjectID, config.dialogFlowSessionID + userID);
   const request = {
       session: sessionPath,
       queryInput: {
@@ -43,7 +39,8 @@ exports.textQuery = async (incomingText, parameters = {}) => {
     return result;
 }
 
-exports.eventQuery = async (incomingEvent, parameters = {}) => {
+exports.eventQuery = async (incomingEvent, userID, parameters = {}) => {
+  const sessionPath = sessionClient.sessionPath(config.googleProjectID, config.dialogFlowSessionID + userID);
   const request = {
       session: sessionPath,
       queryInput: {

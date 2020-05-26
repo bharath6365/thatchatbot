@@ -1,15 +1,28 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Message from './Message';
+import Cookies from 'universal-cookie';
+import { v4 as uuid } from 'uuid';
+
+const cookie = new Cookies();
 export default class Chatbot extends Component {
   // Initially there will be nothing on the state.
   constructor(props) {
     super(props);
+    // Invisible div to scroll to the end.
+    this.messagesEnd = React.createRef();
 
     // Messages will be an array of conversation.
     this.state = {
       messages: []
     };
+
+    // Generate new UUID. Only once per session.
+    if (cookie.get('userID') === undefined) {
+      cookie.set('userID', uuid(), {path: '/'});
+    }
+    
+    this.userID = cookie.get('userID');
   }
 
   // When component mounts.
@@ -36,7 +49,7 @@ export default class Chatbot extends Component {
     });
 
     // Make the API Request.
-    const res = await axios.post('/api/df_text_query', { text });
+    const res = await axios.post('/api/df_text_query', { text, userID: this.userID });
 
     for (let msg of res.data.fulfillmentMessages) {
       // Reset Conversation.
@@ -52,11 +65,18 @@ export default class Chatbot extends Component {
     }
     //
   }
+  
+
+  componentDidUpdate() {
+    this.messagesEnd.current.scrollIntoView({
+      behavior: 'smooth'
+    })
+  }
 
   // Used to pass event query.
   async eventQuery(event) {
     // Make the API Request.
-    const res = await axios.post('/api/df_event_query', { event });
+    const res = await axios.post('/api/df_event_query', { event, userID: this.userID });
 
     for (let msg of res.data.fulfillmentMessages) {
       let conversation = {
@@ -112,7 +132,11 @@ export default class Chatbot extends Component {
         >
           <h2>Chatbot</h2>
           {this.renderMessages()}
-          <input onKeyPress={this.handleInputChange} type="text" />
+
+          <div 
+            ref={this.messagesEnd}
+          ></div>
+          <input autoFocus={true} onKeyPress={this.handleInputChange} type="text" />
         </div>
       </div>
     );
