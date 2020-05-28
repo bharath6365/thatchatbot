@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Message from './Message';
 import Cookies from 'universal-cookie';
+import Card from './Card';
 import { v4 as uuid } from 'uuid';
 
 const cookie = new Cookies();
@@ -14,7 +15,8 @@ export default class Chatbot extends Component {
 
     // Messages will be an array of conversation.
     this.state = {
-      messages: []
+      messages: [],
+      inputValue: ''
     };
 
     // Generate new UUID. Only once per session.
@@ -33,6 +35,9 @@ export default class Chatbot extends Component {
 
   // Used to pass text query
   async textQuery(text) {
+    
+    // User abusing enter key.
+    if (!text) return;
     // Mirrors the API Response that is given by DialogFlow.
     let conversation = {
       speaks: 'me',
@@ -75,6 +80,8 @@ export default class Chatbot extends Component {
 
   // Used to pass event query.
   async eventQuery(event) {
+    
+    if (!event) return;
     // Make the API Request.
     const res = await axios.post('/api/df_event_query', { event, userID: this.userID });
 
@@ -92,51 +99,89 @@ export default class Chatbot extends Component {
 
   // Handles input event change.
   handleInputChange = (event) => {
-    if (event.key === 'Enter') {
-      this.textQuery(event.target.value);
-
-      event.target.value = '';
-    }
+    this.setState({
+      inputValue: event.target.value
+    })
   };
+
+// Form Submission
+  handleSubmit = (event) => {
+    event.preventDefault();
+    const inputValue = this.state.inputValue;
+    console.log('Calling text query', inputValue);
+    if (inputValue) {
+      this.textQuery(inputValue);
+    }
+    
+    //Reset.
+    this.setState({
+      inputValue: ''
+    })
+  }
 
   renderMessages = () => {
     const { messages } = this.state;
 
-    console.log('Messages is', messages);
 
     return messages.map((message, i) => {
-      return (
-        // Key can be index because we won't be removing array elements at all.
-        <Message key={i} initiator={message.speaks} message={message.msg.text.text} />
-      );
+      if (message.msg?.text?.text) {
+       return <Message key={i} initiator={message.speaks} message={message.msg.text.text} />
+      } else if (message.msg?.payload?.fields?.cards) {
+        return <div key={i}>
+          <div className="card-panel grey lighten-5 z-depth-1">
+            <div style={{overflow: 'hidden'}}>
+              <a className="btn-floating btn-large waves-effect waves-light red">
+                <i class="material-icons">{message.speaks}</i>
+              </a>
+            </div>
+
+            <div style={{overflow: 'auto', overflowY: 'scroll'}}>
+              <div style={{height: 300, width: message.msg.payload.fields.cards.listValue.values.length * 270}}>
+                {this.renderCards(message.msg.payload.fields.cards.listValue.values)}
+              </div>
+            </div>
+          </div>
+        </div>
+      }
     });
   };
+
+  renderCards = (cards) => {
+    return cards.map((card, i) => <Card key={i} payload={card.structValue} />)
+  }
 
   // Render method.
   render() {
     return (
-      <div
-        style={{
-          height: 400,
-          width: 400,
-          float: 'right'
-        }}
+      <div className="chatbot"
       >
         <div
-          id="chatbot"
-          style={{
-            overflow: 'auto',
-            height: '100%',
-            width: '100%'
-          }}
+          className="chatbot-inner"
         >
-          <h2>Chatbot</h2>
-          {this.renderMessages()}
+          <div className="chatbot-header">
+            Bharath's Bot
+
+            <div className="chatbot-toggle">
+              <i className="material-icons">close</i>
+            </div>
+          </div>
+
+          <div className="chatbot-body">
+            {this.renderMessages()}
+          </div>
+          
 
           <div 
             ref={this.messagesEnd}
           ></div>
-          <input autoFocus={true} onKeyPress={this.handleInputChange} type="text" />
+          <form onSubmit={this.handleSubmit}>
+            <input className="chat-input" autoFocus={true} type="text" onChange={this.handleInputChange} value={this.state.inputValue} placeholder="Send your messsage"/>
+
+            <button type="submit" className="chat-submit">
+              <i class="material-icons">send</i>
+            </button>
+          </form>
+          
         </div>
       </div>
     );
