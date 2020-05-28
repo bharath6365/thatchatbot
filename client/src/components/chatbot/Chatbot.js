@@ -16,7 +16,9 @@ export default class Chatbot extends Component {
     // Messages will be an array of conversation.
     this.state = {
       messages: [],
-      inputValue: ''
+      inputValue: '',
+      // Chatbot open/close.
+      opened: false
     };
 
     // Generate new UUID. Only once per session.
@@ -73,9 +75,16 @@ export default class Chatbot extends Component {
   
 
   componentDidUpdate() {
-    this.messagesEnd.current.scrollIntoView({
-      behavior: 'smooth'
-    })
+
+    if (this.messagesEnd.current) {
+      setTimeout(() => {
+          this.messagesEnd.current.scrollIntoView({
+          behavior: 'smooth'
+        })
+      }, 200)
+      
+    }
+    
   }
 
   // Used to pass event query.
@@ -95,6 +104,13 @@ export default class Chatbot extends Component {
         messages: [ ...this.state.messages, conversation ]
       });
     }
+  }
+
+  // Handle Chatbot open/close
+  toggleChatbot = () => {
+    this.setState({
+      opened: !this.state.opened
+    })
   }
 
   // Handles input event change.
@@ -152,16 +168,24 @@ export default class Chatbot extends Component {
 
   // Render method.
   render() {
+    const {opened} = this.state;
     return (
-      <div className="chatbot"
+      <div className={`chatbot ${this.state.opened ? 'open' : ''}`}
       >
-        <div
+        {!opened && (
+        <div className="chatbot-inner-unopened" onClick={this.toggleChatbot}>
+          <i class="material-icons">message</i>
+        </div>
+          
+        )}
+        {opened && (
+          <div
           className="chatbot-inner"
         >
           <div className="chatbot-header">
             Bharath's Bot
 
-            <div className="chatbot-toggle">
+            <div onClick={this.toggleChatbot} className="chatbot-toggle">
               <i className="material-icons">close</i>
             </div>
           </div>
@@ -183,6 +207,8 @@ export default class Chatbot extends Component {
           </form>
           
         </div>
+        )}
+        
       </div>
     );
   }

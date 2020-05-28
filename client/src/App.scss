@@ -5,37 +5,51 @@ body {
 }
 
 $chatbot-header-height: 50px;
-$chatbot-height: 400px;
+
 
 .chatbot {
-  position: relative;
+  position: absolute;
+  bottom: 20px;
+  right: 3vw;
   width: 400px;
-  height: $chatbot-height;
   border: 1px solid #acacac;
   border-radius: 3px;
   overflow: hidden;
   float: right;
-  margin-right: 5vw;
   clip-path: circle(15% at 80% 80%);
   transition: all 0.5s ease;
 
-  &:hover {
-    clip-path: circle(100%)
+  &.open {
+    clip-path: circle(100%);
+  }
+
+  &:not(.open) {
+    background: black !important;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    clip-path: none;
   }
 }
 
 .chatbot-inner {
   position: relative;
 
-  form {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    overflow: hidden;
-  }
 }
 
+.chatbot-inner-unopened {
+  cursor: pointer;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+
+  i {
+    font-size: 2rem;
+  }
+}
 .chatbot-header {
   display: flex;
   height: $chatbot-header-height;
@@ -45,7 +59,7 @@ $chatbot-height: 400px;
   color: white;
   font-size: 1.5rem;
   padding-left: 10px;
-  
+
   > * {
     margin: 0 5px;
   }
@@ -101,7 +115,7 @@ $chatbot-height: 400px;
 }
 
 .chatbot-toggle {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .chatbot-body {
@@ -109,6 +123,7 @@ $chatbot-height: 400px;
   height: 350px;
   border: 1px solid #ccc;
   overflow: auto;
+  padding-bottom: 35px;
 }
 .chatbot-body:after {
   content: "";
@@ -131,12 +146,44 @@ $chatbot-height: 400px;
   border: 7px solid #232943;
   border-radius: 2rem;
   height: 15px;
-  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
 
-
 ::-webkit-scrollbar-thumb {
-  background:#e1067f;
+  background: #e1067f;
   border-radius: 3px;
   height: 20px;
+}
+
+.bot-image {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.message-wrapper {
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+
+  &.user {
+    justify-content: flex-end;
+
+    .message-bubble {
+      clip-path: polygon(50% 0%, 97% 0, 100% 50%, 97% 100%, 0 100%, 0 50%, 0 0);
+      background: #b8e6e7e8
+    }
+  }
+}
+
+.message-bubble {
+  display: inline-block;
+  background: #e7b8b857;
+  clip-path: polygon(58% 0, 100% 0, 100% 100%, 3% 100%, 0 51%, 3% 1%);
+  z-index: 200;
+  padding: 10px;
+  border-radius: 5px;
+  line-height: 1.5rem;
 }
