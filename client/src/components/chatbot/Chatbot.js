@@ -3,6 +3,7 @@ import axios from 'axios';
 import Message from './Message';
 import Cookies from 'universal-cookie';
 import Card from './Card';
+import QuickReplies from './QuickReplies';
 import { v4 as uuid } from 'uuid';
 
 const cookie = new Cookies();
@@ -73,6 +74,7 @@ export default class Chatbot extends Component {
     //
   }
   
+  // DNeed to make s
 
   componentDidUpdate() {
 
@@ -124,7 +126,6 @@ export default class Chatbot extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     const inputValue = this.state.inputValue;
-    console.log('Calling text query', inputValue);
     if (inputValue) {
       this.textQuery(inputValue);
     }
@@ -135,6 +136,22 @@ export default class Chatbot extends Component {
     })
   }
 
+  // Handle Quick Reply Payload
+  handleQuickReplyPayload = (event, payload, text) => {
+    event.preventDefault();
+    
+    // All event payload must be in the format 'event_something'
+    if (payload.startsWith('event')) {
+      return this.eventQuery(payload);
+    }
+
+    return this.textQuery(text);
+  }
+  
+  /*
+    The main component that's responsible for rendering different types of messages.
+    Text, Cards, Quick Replies.
+  */
   renderMessages = () => {
     const { messages } = this.state;
 
@@ -142,7 +159,8 @@ export default class Chatbot extends Component {
     return messages.map((message, i) => {
       if (message.msg?.text?.text) {
        return <Message key={i} initiator={message.speaks} message={message.msg.text.text} />
-      } else if (message.msg?.payload?.fields?.cards) {
+      } 
+      else if (message.msg?.payload?.fields?.cards) {
         return <div key={i}>
           <div className="card-panel grey lighten-5 z-depth-1">
             <div style={{overflow: 'hidden'}}>
@@ -158,10 +176,19 @@ export default class Chatbot extends Component {
             </div>
           </div>
         </div>
+      } 
+      // Quick Replies.
+      else if (message.msg?.payload?.fields?.quick_replies) {
+        return <QuickReplies 
+          key={i} text={message.msg.payload.fields.text}
+          payload={message.msg.payload.fields.quick_replies.listValue.values}
+          handleClick={this.handleQuickReplyPayload} 
+        />
       }
     });
   };
-
+  
+  // Renders all the cards.
   renderCards = (cards) => {
     return cards.map((card, i) => <Card key={i} payload={card.structValue} />)
   }
