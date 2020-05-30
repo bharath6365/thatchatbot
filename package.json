@@ -6,7 +6,6 @@
   "scripts": {
     "start": "node index.js",
     "dev": "concurrently \"nodemon index.js\" \"cd client && npm run start\""
-
   },
   "engines": {
     "node": "13.6.0",
@@ -27,7 +26,8 @@
     "body-parser": "^1.19.0",
     "dialogflow": "^1.1.1",
     "express": "^4.17.1",
-    "http2": "^3.3.7"
+    "http2": "^3.3.7",
+    "mongoose": "^5.9.16"
   },
   "devDependencies": {
     "concurrently": "^5.2.0",
