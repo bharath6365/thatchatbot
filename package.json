@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "concurrently \"nodemon index.js\" \"cd client && npm run start\""
+    "dev": "concurrently \"nodemon index.js\" \"cd client && npm run start\"",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "engines": {
     "node": "13.6.0",
@@ -23,8 +24,10 @@
   },
   "homepage": "https://github.com/bharath6365/thatchatbot#readme",
   "dependencies": {
+    "actions-on-google": "^2.12.0",
     "body-parser": "^1.19.0",
     "dialogflow": "^1.1.1",
+    "dialogflow-fulfillment": "^0.6.1",
     "express": "^4.17.1",
     "http2": "^3.3.7",
     "mongoose": "^5.9.16"
