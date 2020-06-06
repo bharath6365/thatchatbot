@@ -79,6 +79,7 @@ export default class Chatbot extends Component {
   componentDidUpdate() {
 
     if (this.messagesEnd.current) {
+      console.log('This ran');
       setTimeout(() => {
           this.messagesEnd.current.scrollIntoView({
           behavior: 'smooth'
@@ -210,22 +211,18 @@ export default class Chatbot extends Component {
           className="chatbot-inner"
         >
           <div className="chatbot-header">
-            Bharath's Bot
+            <h5>Bharath's Bot</h5>
 
-            <div onClick={this.toggleChatbot} className="chatbot-toggle">
-              <i className="material-icons">close</i>
-            </div>
+              <i onClick={this.toggleChatbot} className="material-icons chatbot-toggle">close</i>
           </div>
 
           <div className="chatbot-body">
             {this.renderMessages()}
+
+            <div ref={this.messagesEnd}></div>
           </div>
           
-
-          <div 
-            ref={this.messagesEnd}
-          ></div>
-          <form onSubmit={this.handleSubmit}>
+          <form  onSubmit={this.handleSubmit}>
             <input className="chat-input" autoFocus={true} type="text" onChange={this.handleInputChange} value={this.state.inputValue} placeholder="Send your messsage"/>
 
             <button type="submit" className="chat-submit">

@@ -5,26 +5,25 @@ body {
 }
 
 $chatbot-header-height: 50px;
-
+$chatbot-primary: linear-gradient(to right bottom, rgb(177, 81, 153) 0%, rgb(217, 126, 179) 100%);
 
 .chatbot {
   position: absolute;
   bottom: 20px;
   right: 3vw;
   width: 400px;
-  border: 1px solid #acacac;
-  border-radius: 3px;
+  height: 470px;
   overflow: hidden;
   float: right;
   clip-path: circle(15% at 80% 80%);
-  transition: all 0.5s ease;
+  transition: all 0.45s ease;
 
   &.open {
     clip-path: circle(100%);
   }
 
   &:not(.open) {
-    background: black !important;
+    background:$chatbot-primary;
     width: 80px;
     height: 80px;
     border-radius: 50%;
@@ -34,7 +33,6 @@ $chatbot-header-height: 50px;
 
 .chatbot-inner {
   position: relative;
-
 }
 
 .chatbot-inner-unopened {
@@ -55,7 +53,7 @@ $chatbot-header-height: 50px;
   height: $chatbot-header-height;
   justify-content: space-between;
   align-items: center;
-  background-color: #af1f68f7;
+  background: $chatbot-primary;
   color: white;
   font-size: 1.5rem;
   padding-left: 10px;
@@ -122,7 +120,8 @@ $chatbot-header-height: 50px;
   position: relative;
   height: 350px;
   border: 1px solid #ccc;
-  overflow: auto;
+  overflow: hidden;
+  overflow-y: auto;
   padding-bottom: 35px;
 }
 .chatbot-body:after {
@@ -133,7 +132,6 @@ $chatbot-header-height: 50px;
   left: 0;
   bottom: 0;
   right: 0;
-  height: 100%;
   position: absolute;
   z-index: -1;
 }
@@ -173,7 +171,7 @@ $chatbot-header-height: 50px;
 
     .message-bubble {
       clip-path: polygon(50% 0%, 97% 0, 100% 50%, 97% 100%, 0 100%, 0 50%, 0 0);
-      background: #b8e6e7e8
+      background: #b8e6e7e8;
     }
   }
 }
