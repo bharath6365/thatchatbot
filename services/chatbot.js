@@ -42,6 +42,7 @@ exports.textQuery = async (incomingText, userID,  parameters = {}) => {
 
     // Pass this through Handle Action
     responses = await handleAction(responses);
+
     const result = responses[0].queryResult;
 
     return result;

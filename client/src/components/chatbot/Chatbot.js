@@ -3,6 +3,8 @@ import axios from 'axios';
 import Message from './Message';
 import Cookies from 'universal-cookie';
 import Card from './Card';
+import Recommendation from './Recommendation';
+import BotImage from '../../images/bot.webp';
 import QuickReplies from './QuickReplies';
 import { v4 as uuid } from 'uuid';
 
@@ -59,11 +61,14 @@ export default class Chatbot extends Component {
     // Make the API Request.
     const res = await axios.post('/api/df_text_query', { text, userID: this.userID });
 
+
     for (let msg of res.data.fulfillmentMessages) {
       // Reset Conversation.
       let conversation = {
         speaks: 'bot',
-        msg
+        msg,
+        // Pass this on so that we can listen for "Recommend Channels intent name."
+        parameters: res.data.parameters?.fields
       };
 
       // Setting the state in the loop. Probably not the best idea. But our bot will send 1 or 2 responses at max. Skipping for now.
@@ -74,12 +79,10 @@ export default class Chatbot extends Component {
     //
   }
   
-  // DNeed to make s
 
   componentDidUpdate() {
 
     if (this.messagesEnd.current) {
-      console.log('This ran');
       setTimeout(() => {
           this.messagesEnd.current.scrollIntoView({
           behavior: 'smooth'
@@ -158,8 +161,29 @@ export default class Chatbot extends Component {
 
 
     return messages.map((message, i) => {
+      // For channel recommendations additional parameter field is added.
+      if (message.parameters && message.parameters['channel-type']) {
+        const {recommendations} = JSON.parse(message.msg?.text?.text[0]);
+        console.log('Recommendations is', recommendations);
+        console.log('Message is', message);
+        return (
+          <div>
+            <img className="bot-image" src={BotImage} />
+
+            {
+
+              recommendations.map(recommendation => {
+                return (
+                  <Recommendation key={recommendation._id} recommendation={recommendation} />
+                )     
+              })
+            }
+          </div>
+        )
+      }
+
       if (message.msg?.text?.text) {
-       return <Message key={i} initiator={message.speaks} message={message.msg.text.text} />
+        return <Message key={i} initiator={message.speaks} message={message.msg.text.text} />
       } 
       else if (message.msg?.payload?.fields?.cards) {
         return <div key={i}>

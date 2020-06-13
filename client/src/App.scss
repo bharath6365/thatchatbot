@@ -2,6 +2,11 @@ body {
   margin: 0;
   box-sizing: border-box;
   outline: none;
+  font-family: 'Spectral', serif;
+}
+
+a {
+  text-decoration: none;
 }
 
 $chatbot-header-height: 50px;
@@ -184,4 +189,38 @@ $chatbot-primary: linear-gradient(to right bottom, rgb(177, 81, 153) 0%, rgb(217
   padding: 10px;
   border-radius: 5px;
   line-height: 1.5rem;
+}
+
+.card {
+  display: flex;
+  background: linear-gradient(to right, #42275a, #734b6d);
+  border-radius: 2px;
+  max-width: 320px;
+  margin: 10px auto;
+  padding: 10px;
+  color: white;
+
+  img {
+    max-height: 70px;
+    margin-right: 20px;
+    border-radius: 50%;
+  }
+
+  .card-body {
+    padding: 0 5px;
+
+    * {
+      margin: 0;
+    }
+
+    p {
+      font-size: 0.9rem;
+      color: #cdcdcd;
+      line-height: 1.4;
+    }
+
+    .link {
+      text-decoration: none;
+    }
+  }
 }
