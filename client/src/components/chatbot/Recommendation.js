@@ -9,7 +9,7 @@ export default function Recommendation({ recommendation }) {
           <h3>{recommendation.name}</h3>
           <p>{recommendation.description}</p>
 
-          <p className="link">Visit -></p>
+          <p className="link">Visit</p>
         </div>
       </div>
     </a>

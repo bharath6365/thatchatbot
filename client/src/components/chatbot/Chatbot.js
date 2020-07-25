@@ -163,9 +163,11 @@ export default class Chatbot extends Component {
     return messages.map((message, i) => {
       // For channel recommendations additional parameter field is added.
       if (message.parameters && message.parameters['channel-type']) {
-        const {recommendations} = JSON.parse(message.msg?.text?.text[0]);
-        console.log('Recommendations is', recommendations);
-        console.log('Message is', message);
+        let recommendations = [];
+        const response = JSON.parse(message.msg?.text?.text[0]);
+        if (response) {
+          recommendations = response.recommendations;
+        }
         return (
           <div>
             <img className="bot-image" src={BotImage} />

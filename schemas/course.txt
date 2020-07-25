@@ -1,0 +1,12 @@
+
+{
+ "type": "backend",
+ "recommendations": [
+   {
+    "name": "Hussain Nasser",     
+    "description": "A very underrated channel for learning Backend under the hood 😬",
+    "imageUrl": "https://yt3.ggpht.com/a/AATXAJwIiXF7RJb-MvjLdBMdvpxRNrnXdKgWNmrUzsuamw=s288-c-k-c0xffffffff-no-rj-mo",
+    "link": "https://www.youtube.com/user/GISIGeometry"
+   }
+ ]
+}
