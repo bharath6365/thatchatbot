@@ -4,7 +4,6 @@ import Message from './Message';
 import Cookies from 'universal-cookie';
 import Card from './Card';
 import Recommendation from './Recommendation';
-import BotImage from '../../images/bot.webp';
 import QuickReplies from './QuickReplies';
 import { v4 as uuid } from 'uuid';
 
@@ -170,8 +169,8 @@ export default class Chatbot extends Component {
         }
         return (
           <div>
-            <img className="bot-image" src={BotImage} />
-
+            
+            <Message initiator="bot" message="Here are my suggestions" />
             {
 
               recommendations.map(recommendation => {
@@ -186,24 +185,7 @@ export default class Chatbot extends Component {
 
       if (message.msg?.text?.text) {
         return <Message key={i} initiator={message.speaks} message={message.msg.text.text} />
-      } 
-      else if (message.msg?.payload?.fields?.cards) {
-        return <div key={i}>
-          <div className="card-panel grey lighten-5 z-depth-1">
-            <div style={{overflow: 'hidden'}}>
-              <a className="btn-floating btn-large waves-effect waves-light red">
-                <i class="material-icons">{message.speaks}</i>
-              </a>
-            </div>
-
-            <div style={{overflow: 'auto', overflowY: 'scroll'}}>
-              <div style={{height: 300, width: message.msg.payload.fields.cards.listValue.values.length * 270}}>
-                {this.renderCards(message.msg.payload.fields.cards.listValue.values)}
-              </div>
-            </div>
-          </div>
-        </div>
-      } 
+      }  
       // Quick Replies.
       else if (message.msg?.payload?.fields?.quick_replies) {
         return <QuickReplies 
@@ -236,10 +218,10 @@ export default class Chatbot extends Component {
           <div
           className="chatbot-inner"
         >
-          <div className="chatbot-header">
-            <h5>Bharath's Bot</h5>
+          <div className="chatbot-header" onClick={this.toggleChatbot}>
+            <h5>Toby</h5>
 
-              <i onClick={this.toggleChatbot} className="material-icons chatbot-toggle">close</i>
+              <i className="material-icons chatbot-toggle">close</i>
           </div>
 
           <div className="chatbot-body">
