@@ -4,8 +4,7 @@ const mongoose = require('mongoose');
 const config = require('../config/keys');
 const structJson = require('./structjson');
 
-// User Import
-const User = mongoose.model('user');
+const Joke = mongoose.model('joke');
 
 const projectID = config.googleProjectID;
 const credentials =  {
@@ -77,12 +76,13 @@ exports.eventQuery = async (incomingEvent, userID, parameters = {}) => {
 const handleAction = async (responses) => {
 
   const queryResult = responses[0].queryResult;
+  console.log('Query Result is', queryResult);
 
   switch (queryResult.action) {
-    case "contact":
+    // This is defined on the Dialogflow UI.
+    case "joke":
       if (queryResult.allRequiredParamsPresent) {
-        // Handle user registration here.
-        await userRegistration(queryResult.parameters.fields)
+        await jokeRegistration(queryResult.parameters.fields);
       }
       return responses;
     default:
@@ -92,16 +92,15 @@ const handleAction = async (responses) => {
 
 }
 
-// Currently interested in username and email.
-const userRegistration = async (fields) => {
+const jokeRegistration = async (fields) => {
   try {
-    const user = new User({
-    // Bloody GRPC
+    const joke = new Joke({
+    // GRPC :/
     name: fields.name.stringValue,
-    email: fields.email.stringValue,
+    joke: fields.joke.stringValue,
     date: new Date()
   });
-  let registered = await user.save();
+  await joke.save();
   } catch(e) {
     console.error(e);
   }

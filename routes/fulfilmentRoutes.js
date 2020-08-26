@@ -21,7 +21,6 @@ module.exports = (app) => {
       });
 
       // Dialogflow doesn't support json responses yet.
-      console.log('Channel is', channel); 
       agent.add(JSON.stringify(channel))
     }
 

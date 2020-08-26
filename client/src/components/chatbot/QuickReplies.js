@@ -24,7 +24,9 @@ export default class QuickReplies extends Component {
   renderQuickReplies = (quickReplies) => {
     if (quickReplies) {
      return quickReplies.map((reply, i) => {
-        return <QuickReplyButton key={i} reply={reply} handleClick={this.handleClick} />
+        return (
+          <QuickReplyButton key={i} reply={reply} handleClick={this.handleClick} />
+        )
       })
     }
 
@@ -32,12 +34,15 @@ export default class QuickReplies extends Component {
   };
   render() {
     return (
-      <div className="message-wrapper">
+      <div className="message-wrapper wrap">
         {/* Quick Replies are always from a bot. So we don't need this. */}
         <img className="bot-image" src={BotImage} />
         <div className="message-bubble">{this.props.text.stringValue}</div>
         {/* Payload here means the quick_replies array. */}
-        {this.renderQuickReplies(this.props.payload)}
+        <div className="quick-reply-button-wrapper">
+          {this.renderQuickReplies(this.props.payload)}
+        </div>
+        
       </div>
     );
   }

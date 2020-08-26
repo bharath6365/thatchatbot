@@ -188,11 +188,16 @@ export default class Chatbot extends Component {
       }  
       // Quick Replies.
       else if (message.msg?.payload?.fields?.quick_replies) {
-        return <QuickReplies 
-          key={i} text={message.msg.payload.fields.text}
-          payload={message.msg.payload.fields.quick_replies.listValue.values}
-          handleClick={this.handleQuickReplyPayload} 
-        />
+        // Dont' want to spam the user. So quick replies will load only once per load.
+        if (!this.quickReplyShown) {
+          this.quickReplyShown = true;
+          return <QuickReplies 
+            key={i} text={message.msg.payload.fields.text}
+            payload={message.msg.payload.fields.quick_replies.listValue.values}
+            handleClick={this.handleQuickReplyPayload} 
+          />
+        }
+        
       }
     });
   };

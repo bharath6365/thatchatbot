@@ -13,6 +13,7 @@ mongoose.connect(config.mongoURI, {
 // Register models
 require('./models/User');
 require('./models/Channel');
+require('./models/Joke');
 
 app.use(bodyParser.json());
 
